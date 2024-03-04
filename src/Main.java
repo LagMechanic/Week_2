@@ -1,21 +1,15 @@
+import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     // Static list of users, acting as a database
     private static ArrayList<User> users = new ArrayList<>();
 
-    // Mock authentication service that always returns the first user when log in, and does nothing when sign up
-    private static IAuthenticationService authService = new IAuthenticationService() {
-        @Override
-        public User signUp(String username, String password) {
-            return null;
-        }
+    private static AuthenticationService authService = new AuthenticationService(users);
 
-        @Override
-        public User logIn(String username, String password) {
-            return users.get(0);
-        }
-    };
     private static boolean isRunning = true;
 
     /**
@@ -90,6 +84,11 @@ public class Main {
         String password = scanner.nextLine();
         User user = authService.signUp(username, password);
         // TODO Later: Shows a message based on the result
+        if (Objects.equals(user, null)) {
+            System.out.println("The username is already taken!");
+        } else {
+            System.out.println("User " + user.getUsername() + " has been created successfully!");
+        }
     }
 
     /**
